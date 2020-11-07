@@ -21,16 +21,10 @@ const enable_interaction = true;
 var scrolling = false;
 var scroll_y = 0;
 
-const record_animation = false;
-var stop_animation = false;
-
-const pure_time_mode = true;
+var t = 0;
 const t_purerate = .005;
 
 const fps = 50;
-
-var t = 0;
-
 var fpsInterval, startTime, now, then, elapsed;
 
 
@@ -89,14 +83,10 @@ function draw() {
     DwitterCode(W, H, scale/1.5, N/1,-1*t, phase);
  
  
-    if(!pure_time_mode) {
-        frame = (frame+1)%total_frames;
-        t = t_rate*frame;
-    }
-    else {
-        t += t_purerate;
-        t %=phase*2*Math.PI;
-    }
+    
+    t += t_purerate;
+        
+    
 
     if (hold) {
         fill_alpha -= .01;
@@ -131,21 +121,6 @@ function startAnimating(fps) {
         then = now - (elapsed % fpsInterval);
      
         draw();
-         
-        if(record_animation) {
-            if (frame + 1 === total_frames) {
-                loop += 1;
-            }
-    
-            if (loop === 1) { 
-                let frame_number = frame.toString().padStart(total_frames.toString().length, '0');
-                download('image_'+frame_number+'.png', canvas);
-            }
-    
-            if (loop === 2) { stop_animation = true }
-        }
-         
-        
      }
 
      if(enable_interaction) {
